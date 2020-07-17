@@ -46,7 +46,8 @@ internal class CurtainUpdateModel: Curtain {
         get { return curtainController?.curtainHandleIndicatorColor ?? .black}
         set { curtainController?.curtainHandleIndicatorColor = newValue }
     }
-
+    
+    var shouldRecognizeSimultaneously: Bool = true
     
     private weak var curtainController: CurtainController?
     

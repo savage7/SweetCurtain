@@ -21,7 +21,7 @@
 import UIKit
 
 ///A container view controller that implements a content-curtain interface.
-open class CurtainController: UIViewController {
+class CurtainController: UIViewController {
     
     //MARK: Constants
     internal struct Constants {
@@ -35,7 +35,7 @@ open class CurtainController: UIViewController {
         
     }
     
-    //MARK: Interface public properties
+    //MARK: Interface  properties
     ///The delegate you want to receive curtain controller messages that concern its curtain.
     open weak var curtainDelegate: CurtainDelegate?
     ///The object that provides all curtain's behaviour properties.
@@ -107,7 +107,7 @@ open class CurtainController: UIViewController {
     ///Initializes and returns a newly created curtain controller.
     ///- Parameter content: The view controller that takes up all the space behind the curtain.
     ///- Parameter curtain: The view controller that sits on top of the content .
-    public init(content: UIViewController, curtain: UIViewController) {
+     init(content: UIViewController, curtain: UIViewController) {
         super.init(nibName: nil, bundle: nil)
         
         addContent(content)
@@ -116,7 +116,7 @@ open class CurtainController: UIViewController {
         setupFlow()
     }
     
-    required public init?(coder: NSCoder) {
+    required  init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
@@ -136,7 +136,7 @@ open class CurtainController: UIViewController {
         addCurtainHandleView()
     }
     
-    override open func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         guard firstLayout else { return }
@@ -154,7 +154,7 @@ open class CurtainController: UIViewController {
     ///Changes a curtain position you want.
     ///- Parameter position: The position of the curtain to be applied.
     ///- Parameter animated: Pass true to animate the position change.
-    open func moveCurtain(to position: CurtainHeightState, animated: Bool) {
+    func moveCurtain(to position: CurtainHeightState, animated: Bool) {
         performState(position, animated: animated)
     }
     
@@ -344,14 +344,16 @@ extension CurtainController {
         topMostScrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.panGestureRecognizer.state), options: [.new, .old], context: nil)
     }
     
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let scrollView = topMostScrollView else { return }
-        
-        if keyPath == #keyPath(UIScrollView.contentOffset) {
-            if scrollView.contentOffset.y < 0 {
-                scrollView.setContentOffset(.zero, animated: false)
-            }
-        } else if keyPath == #keyPath(UIScrollView.panGestureRecognizer.state) {
+       
+        // this causes that the scrollview scrolls under a navbar
+//        if keyPath == #keyPath(UIScrollView.contentOffset) {
+//            if scrollView.contentOffset.y < 0 {
+//           //     scrollView.setContentOffset(.zero, animated: false)
+//            }
+//        } else
+        if keyPath == #keyPath(UIScrollView.panGestureRecognizer.state) {
             if scrollView.panGestureRecognizer.state == .ended || scrollView.panGestureRecognizer.state == .cancelled {
                 bringToNearestPoint()
             }
